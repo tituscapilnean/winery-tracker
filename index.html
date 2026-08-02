@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
 <!-- ?v= is a cache buster: bump it whenever style.css or app.js changes, or the
      CDN in front of the site will keep serving the previous version for hours. -->
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=4">
 </head>
 <body>
 
@@ -51,22 +51,6 @@
     </label>
   </section>
 
-  <!-- Only shows up when this browser holds ratings that aren't in wineries.json yet. -->
-  <aside class="export-bar" id="export-bar" hidden>
-    <div class="export-bar-main">
-      <p class="export-count" id="export-count"></p>
-      <p class="export-help">
-        Ratings live in <code>data/wineries.json</code> &mdash; that's the copy your other
-        devices read. Copy the updated file, commit it, and they'll catch up within minutes.
-      </p>
-    </div>
-    <div class="export-actions">
-      <button type="button" id="export-copy" class="btn">Copy updated JSON</button>
-      <button type="button" id="export-download" class="btn btn--ghost">Download</button>
-    </div>
-    <p class="export-note" id="export-note" role="status"></p>
-  </aside>
-
   <div id="map" role="region" aria-label="Map of wineries"></div>
   <p class="map-note" id="map-note" hidden></p>
 
@@ -79,6 +63,6 @@
 </footer>
 
 <script src="assets/vendor/leaflet/leaflet.js"></script>
-<script src="assets/app.js?v=5"></script>
+<script src="assets/app.js?v=6"></script>
 </body>
 </html>

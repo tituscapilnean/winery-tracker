@@ -54,29 +54,16 @@ than silently rendering a partial list.
 
 ### Star ratings
 
-Every visited winery has a clickable five-star control on its card. Click a star
-to rate, click the same star again to clear it. Ratings feed the average-rating
-stat and the "Sort by rating" option immediately.
+Set `rating` in `data/wineries.json` to a number from 1 to 5, or `null` for
+unrated. Commit and push; every device picks it up within about five minutes.
+Ratings render as stars on the card and in the map popup, and feed the
+average-rating stat and the "Sort by rating" option.
 
-`data/wineries.json` is the source of truth for ratings — it's the only copy
-every device sees. The site is static with no backend, so a click can't write to
-it directly; it lands in a `localStorage` overlay (`winery-tracker:ratings`)
-that shadows the file **in that browser only**. Until it's committed, that
-rating does not exist on your phone.
-
-An export bar appears above the map whenever the overlay holds anything, telling
-you how many ratings are stranded. To land them:
-
-1. **Copy updated JSON** (or **Download**) — you get the whole file with the
-   ratings folded in, formatted exactly like the current one, so the diff is
-   only the `rating` lines.
-2. Paste it over `data/wineries.json`, commit, push.
-3. Every device picks it up within about five minutes.
-
-Once the file agrees with the overlay, the overlay entry is dropped and the bar
-disappears on the next load — so a visible bar always means genuinely unsynced
-work. Clearing a rating exports as `null` rather than reverting to the file
-value, so deletions travel too.
+Editing the file is the only way to rate — the UI is read-only by design. An
+earlier version let you click stars in the browser, but the site is static with
+no backend, so those clicks could only reach `localStorage`: they showed up on
+the machine that made them and nowhere else. Keeping ratings in the file means
+one copy that every device agrees on, with history.
 
 ### Cache busting after a deploy
 

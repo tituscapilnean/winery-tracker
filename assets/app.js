@@ -5,7 +5,6 @@
 
   var state = {
     wineries: [],
-    raw: [], // exactly what wineries.json held, so the export can round-trip it
     status: 'all',
     region: 'all',
     sort: 'date',
@@ -23,12 +22,7 @@
     sort: document.getElementById('sort'),
     search: document.getElementById('search'),
     mapNote: document.getElementById('map-note'),
-    segmented: document.querySelector('.segmented'),
-    exportBar: document.getElementById('export-bar'),
-    exportCount: document.getElementById('export-count'),
-    exportNote: document.getElementById('export-note'),
-    exportCopy: document.getElementById('export-copy'),
-    exportDownload: document.getElementById('export-download')
+    segmented: document.querySelector('.segmented')
   };
 
   /* ---------- helpers ---------- */
@@ -67,212 +61,6 @@
 
   function isVisited(w) {
     return w.status === 'visited';
-  }
-
-  /* ---------- ratings ---------- */
-
-  // data/wineries.json is the source of truth — it's the only copy every device sees.
-  // Clicking stars writes to a localStorage overlay on top of it, which is per-browser:
-  // those edits reach your other devices only once they're exported into the file and
-  // pushed. Anything in the overlay is therefore "not synced yet", and the export bar
-  // says so until it lands in the file.
-  var RATINGS_KEY = 'winery-tracker:ratings';
-
-  var overlay = {};    // key -> number, or null meaning "explicitly cleared"
-  var baseRatings = {}; // key -> whatever the file says, so cleared ratings can fall back
-
-  function ratingKey(w) {
-    return w.id || w.name;
-  }
-
-  // Private-mode Safari and blocked storage both throw; ratings just don't persist there.
-  function loadOverlay() {
-    try {
-      var raw = window.localStorage.getItem(RATINGS_KEY);
-      var parsed = raw ? JSON.parse(raw) : null;
-      if (!parsed || typeof parsed !== 'object') return {};
-      // v2 wraps the map so the shape can change again without guessing.
-      var entries = parsed.v === 2 ? parsed.entries : parsed;
-      if (!entries || typeof entries !== 'object') return {};
-
-      var out = {};
-      Object.keys(entries).forEach(function (k) {
-        var v = entries[k];
-        if (typeof v === 'number' || v === null) out[k] = v;
-      });
-      return out;
-    } catch (err) {
-      return {};
-    }
-  }
-
-  function saveOverlay() {
-    try {
-      window.localStorage.setItem(RATINGS_KEY, JSON.stringify({ v: 2, entries: overlay }));
-    } catch (err) {
-      /* not fatal — the rating still applies for this session */
-    }
-  }
-
-  // Once an exported rating is committed, the file and the overlay agree, so the overlay
-  // entry is dead weight — dropping it is what makes the pending count trustworthy.
-  function pruneOverlay() {
-    var changed = false;
-    Object.keys(overlay).forEach(function (k) {
-      if (!(k in baseRatings)) return; // a winery that's since been renamed or removed
-      if (overlay[k] === baseRatings[k]) {
-        delete overlay[k];
-        changed = true;
-      }
-    });
-    if (changed) saveOverlay();
-  }
-
-  function applyOverlay() {
-    state.wineries.forEach(function (w) {
-      var key = ratingKey(w);
-      w.rating = key in overlay ? overlay[key] : baseRatings[key];
-    });
-  }
-
-  function pendingKeys() {
-    return Object.keys(overlay);
-  }
-
-  function setRating(key, value) {
-    var winery = state.wineries.filter(function (w) { return ratingKey(w) === key; })[0];
-    if (!winery) return;
-
-    // Clicking the star that's already set clears the rating.
-    var next = winery.rating === value ? null : value;
-    winery.rating = next;
-
-    if (next === baseRatings[key]) delete overlay[key];
-    else overlay[key] = next;
-    saveOverlay();
-
-    renderStats();
-    renderExportBar();
-    render();
-
-    // The list is rebuilt on every render, so put focus back where the user left it.
-    var restored = els.results.querySelector(
-      '.rating[data-key="' + cssEscape(key) + '"] button[data-value="' + value + '"]'
-    );
-    if (restored) restored.focus();
-  }
-
-  function cssEscape(value) {
-    if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(value);
-    return String(value).replace(/["\\]/g, '\\$&');
-  }
-
-  function ratingWidgetHTML(w) {
-    var key = ratingKey(w);
-    var current = typeof w.rating === 'number' ? w.rating : null;
-    var buttons = '';
-
-    for (var i = 1; i <= 5; i++) {
-      var on = current != null && current >= i;
-      var half = !on && current != null && current >= i - 0.5;
-      buttons += '<button type="button" data-value="' + i + '"' +
-        ' class="star' + (on ? ' is-on' : '') + (half ? ' is-half' : '') + '"' +
-        ' aria-pressed="' + (on ? 'true' : 'false') + '"' +
-        ' title="' + (current === i ? 'Clear rating' : 'Rate ' + i + ' out of 5') + '"' +
-        '><span aria-hidden="true">★</span>' +
-        '<span class="sr-only">' + i + (i === 1 ? ' star' : ' stars') + '</span></button>';
-    }
-
-    return '<span class="rating" data-key="' + esc(key) + '"' +
-      ' role="group" aria-label="Your rating for ' + esc(w.name) + '">' +
-      buttons +
-      '<span class="rating-value">' + (current == null ? 'Not rated' : current + '/5') + '</span>' +
-      '</span>';
-  }
-
-  /* ---------- export (how ratings get from this browser to every other one) ---------- */
-
-  // Rewrites data/wineries.json with the current ratings folded in, matching the file's
-  // existing formatting exactly — two-space indent, coords on one line — so the diff is
-  // only the rating lines and nothing else churns.
-  function serializeWineries(rows) {
-    var body = rows.map(function (w) {
-      var lines = Object.keys(w).map(function (k) {
-        var v = w[k];
-        var val = Array.isArray(v)
-          ? '[' + v.map(function (x) { return JSON.stringify(x); }).join(', ') + ']'
-          : JSON.stringify(v);
-        return '    ' + JSON.stringify(k) + ': ' + val;
-      });
-      return '  {\n' + lines.join(',\n') + '\n  }';
-    });
-    return '[\n' + body.join(',\n') + '\n]\n';
-  }
-
-  function exportJSON() {
-    var merged = state.raw.map(function (row) {
-      var key = ratingKey(row);
-      if (!key || !(key in overlay)) return row;
-
-      // Rebuild in the original key order so "rating" keeps its place in the object.
-      var copy = {};
-      Object.keys(row).forEach(function (k) {
-        copy[k] = k === 'rating' ? overlay[key] : row[k];
-      });
-      return copy;
-    });
-    return serializeWineries(merged);
-  }
-
-  function copyExport() {
-    var text = exportJSON();
-
-    function done(ok) {
-      els.exportNote.textContent = ok
-        ? 'Copied. Paste it over data/wineries.json, commit, and push.'
-        : 'Could not reach the clipboard — use Download instead.';
-    }
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
-      return;
-    }
-
-    // Older iOS Safari has no async clipboard outside a few contexts.
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    var ok = false;
-    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
-    document.body.removeChild(ta);
-    done(ok);
-  }
-
-  function downloadExport() {
-    var blob = new Blob([exportJSON()], { type: 'application/json' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'wineries.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    els.exportNote.textContent = 'Downloaded. Replace data/wineries.json with it, commit, and push.';
-  }
-
-  function renderExportBar() {
-    var n = pendingKeys().length;
-    els.exportBar.hidden = n === 0;
-    if (!n) return;
-
-    els.exportCount.textContent = n === 1
-      ? '1 rating is saved only in this browser.'
-      : n + ' ratings are saved only in this browser.';
   }
 
   /* ---------- filtering & sorting ---------- */
@@ -356,9 +144,7 @@
       (isVisited(w) ? 'Visited' : 'To visit') + '</span>');
     if (w.date) meta.push('<span>' + esc(formatDate(w.date)) + '</span>');
     if (w.area && w.area !== w.region) meta.push('<span>' + esc(w.area) + '</span>');
-    // Visited wineries get the clickable widget; the rest just show a rating if one exists.
-    if (isVisited(w)) meta.push(ratingWidgetHTML(w));
-    else if (w.rating != null) meta.push(stars(w.rating));
+    if (w.rating != null) meta.push(stars(w.rating));
 
     return '<article class="card' + visitedClass + '">' +
       '<h3>' + title + '</h3>' +
@@ -521,19 +307,10 @@
       render();
     });
 
-    els.results.addEventListener('click', function (e) {
-      var btn = e.target.closest('.rating button[data-value]');
-      if (!btn) return;
-      setRating(btn.parentNode.dataset.key, Number(btn.dataset.value));
-    });
-
     els.search.addEventListener('input', function () {
       state.query = this.value;
       render();
     });
-
-    els.exportCopy.addEventListener('click', copyExport);
-    els.exportDownload.addEventListener('click', downloadExport);
   }
 
   /* ---------- boot ---------- */
@@ -544,9 +321,9 @@
   }
 
   // The CDN caches this for hours and ignores the no-cache request header, so a fresh URL
-  // is the only reliable buster. A 5-minute bucket means pushed ratings show up on your
-  // other devices on their own, without anyone remembering to bump a version by hand —
-  // the file is a few KB, so re-fetching it that often costs nothing.
+  // is the only reliable buster. A 5-minute bucket means an edit to the data — a new
+  // rating, a new winery — reaches every device on its own, without anyone remembering to
+  // bump a version by hand. The file is a few KB, so re-fetching it that often costs nothing.
   var bucket = Math.floor(Date.now() / (5 * 60 * 1000));
 
   fetch('data/wineries.json?v=5&t=' + bucket, { cache: 'no-cache' })
@@ -557,19 +334,9 @@
     .then(function (data) {
       if (!Array.isArray(data)) throw new Error('wineries.json must contain a JSON array.');
 
-      state.raw = data;
       state.wineries = data.filter(function (w) { return w && w.name; });
 
-      state.wineries.forEach(function (w) {
-        baseRatings[ratingKey(w)] = typeof w.rating === 'number' ? w.rating : null;
-      });
-
-      overlay = loadOverlay();
-      pruneOverlay();
-      applyOverlay();
-
       renderStats();
-      renderExportBar();
       renderRegionOptions();
       initMap();
       bindEvents();

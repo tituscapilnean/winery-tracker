@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Winery Tracker &middot; Napa &amp; Sonoma</title>
+<meta name="description" content="Wineries we've visited in Napa and Sonoma, and the ones still on the list.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#127863;</text></svg>">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <h1>Winery Tracker</h1>
+    <p class="tagline">Napa &amp; Sonoma &mdash; where we've been, and where we're headed.</p>
+    <dl class="stats" id="stats"></dl>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="controls" aria-label="Filters">
+    <div class="segmented" role="group" aria-label="Filter by status">
+      <button type="button" data-status="all" class="is-active">All</button>
+      <button type="button" data-status="visited">Visited</button>
+      <button type="button" data-status="to-visit">To visit</button>
+    </div>
+
+    <label class="field">
+      <span>Region</span>
+      <select id="region-filter"><option value="all">All regions</option></select>
+    </label>
+
+    <label class="field">
+      <span>Sort by</span>
+      <select id="sort">
+        <option value="date">Date visited</option>
+        <option value="rating">Rating</option>
+        <option value="name">Name</option>
+        <option value="region">Region</option>
+      </select>
+    </label>
+
+    <label class="field field--grow">
+      <span>Search</span>
+      <input type="search" id="search" placeholder="Name, region, or notes&hellip;" autocomplete="off">
+    </label>
+  </section>
+
+  <div id="map" role="region" aria-label="Map of wineries"></div>
+  <p class="map-note" id="map-note" hidden></p>
+
+  <section id="results" aria-live="polite"></section>
+
+</main>
+
+<footer class="site-footer wrap">
+  <p>Data lives in <code>data/wineries.json</code>. Map tiles &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+</footer>
+
+<script src="assets/vendor/leaflet/leaflet.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

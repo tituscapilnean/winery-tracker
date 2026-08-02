@@ -5,6 +5,7 @@
 
   var state = {
     wineries: [],
+    raw: [], // exactly what wineries.json held, so the export can round-trip it
     status: 'all',
     region: 'all',
     sort: 'date',
@@ -22,7 +23,12 @@
     sort: document.getElementById('sort'),
     search: document.getElementById('search'),
     mapNote: document.getElementById('map-note'),
-    segmented: document.querySelector('.segmented')
+    segmented: document.querySelector('.segmented'),
+    exportBar: document.getElementById('export-bar'),
+    exportCount: document.getElementById('export-count'),
+    exportNote: document.getElementById('export-note'),
+    exportCopy: document.getElementById('export-copy'),
+    exportDownload: document.getElementById('export-download')
   };
 
   /* ---------- helpers ---------- */
@@ -63,42 +69,74 @@
     return w.status === 'visited';
   }
 
-  /* ---------- ratings (stored per browser, since the site is static) ---------- */
+  /* ---------- ratings ---------- */
 
+  // data/wineries.json is the source of truth — it's the only copy every device sees.
+  // Clicking stars writes to a localStorage overlay on top of it, which is per-browser:
+  // those edits reach your other devices only once they're exported into the file and
+  // pushed. Anything in the overlay is therefore "not synced yet", and the export bar
+  // says so until it lands in the file.
   var RATINGS_KEY = 'winery-tracker:ratings';
+
+  var overlay = {};    // key -> number, or null meaning "explicitly cleared"
+  var baseRatings = {}; // key -> whatever the file says, so cleared ratings can fall back
 
   function ratingKey(w) {
     return w.id || w.name;
   }
 
   // Private-mode Safari and blocked storage both throw; ratings just don't persist there.
-  function loadRatings() {
+  function loadOverlay() {
     try {
       var raw = window.localStorage.getItem(RATINGS_KEY);
       var parsed = raw ? JSON.parse(raw) : null;
-      return parsed && typeof parsed === 'object' ? parsed : {};
+      if (!parsed || typeof parsed !== 'object') return {};
+      // v2 wraps the map so the shape can change again without guessing.
+      var entries = parsed.v === 2 ? parsed.entries : parsed;
+      if (!entries || typeof entries !== 'object') return {};
+
+      var out = {};
+      Object.keys(entries).forEach(function (k) {
+        var v = entries[k];
+        if (typeof v === 'number' || v === null) out[k] = v;
+      });
+      return out;
     } catch (err) {
       return {};
     }
   }
 
-  function persistRating(key, value) {
+  function saveOverlay() {
     try {
-      var all = loadRatings();
-      if (value == null) delete all[key];
-      else all[key] = value;
-      window.localStorage.setItem(RATINGS_KEY, JSON.stringify(all));
+      window.localStorage.setItem(RATINGS_KEY, JSON.stringify({ v: 2, entries: overlay }));
     } catch (err) {
       /* not fatal — the rating still applies for this session */
     }
   }
 
-  function applyStoredRatings() {
-    var stored = loadRatings();
-    state.wineries.forEach(function (w) {
-      var saved = stored[ratingKey(w)];
-      if (typeof saved === 'number') w.rating = saved;
+  // Once an exported rating is committed, the file and the overlay agree, so the overlay
+  // entry is dead weight — dropping it is what makes the pending count trustworthy.
+  function pruneOverlay() {
+    var changed = false;
+    Object.keys(overlay).forEach(function (k) {
+      if (!(k in baseRatings)) return; // a winery that's since been renamed or removed
+      if (overlay[k] === baseRatings[k]) {
+        delete overlay[k];
+        changed = true;
+      }
     });
+    if (changed) saveOverlay();
+  }
+
+  function applyOverlay() {
+    state.wineries.forEach(function (w) {
+      var key = ratingKey(w);
+      w.rating = key in overlay ? overlay[key] : baseRatings[key];
+    });
+  }
+
+  function pendingKeys() {
+    return Object.keys(overlay);
   }
 
   function setRating(key, value) {
@@ -108,9 +146,13 @@
     // Clicking the star that's already set clears the rating.
     var next = winery.rating === value ? null : value;
     winery.rating = next;
-    persistRating(key, next);
+
+    if (next === baseRatings[key]) delete overlay[key];
+    else overlay[key] = next;
+    saveOverlay();
 
     renderStats();
+    renderExportBar();
     render();
 
     // The list is rebuilt on every render, so put focus back where the user left it.
@@ -146,6 +188,91 @@
       buttons +
       '<span class="rating-value">' + (current == null ? 'Not rated' : current + '/5') + '</span>' +
       '</span>';
+  }
+
+  /* ---------- export (how ratings get from this browser to every other one) ---------- */
+
+  // Rewrites data/wineries.json with the current ratings folded in, matching the file's
+  // existing formatting exactly — two-space indent, coords on one line — so the diff is
+  // only the rating lines and nothing else churns.
+  function serializeWineries(rows) {
+    var body = rows.map(function (w) {
+      var lines = Object.keys(w).map(function (k) {
+        var v = w[k];
+        var val = Array.isArray(v)
+          ? '[' + v.map(function (x) { return JSON.stringify(x); }).join(', ') + ']'
+          : JSON.stringify(v);
+        return '    ' + JSON.stringify(k) + ': ' + val;
+      });
+      return '  {\n' + lines.join(',\n') + '\n  }';
+    });
+    return '[\n' + body.join(',\n') + '\n]\n';
+  }
+
+  function exportJSON() {
+    var merged = state.raw.map(function (row) {
+      var key = ratingKey(row);
+      if (!key || !(key in overlay)) return row;
+
+      // Rebuild in the original key order so "rating" keeps its place in the object.
+      var copy = {};
+      Object.keys(row).forEach(function (k) {
+        copy[k] = k === 'rating' ? overlay[key] : row[k];
+      });
+      return copy;
+    });
+    return serializeWineries(merged);
+  }
+
+  function copyExport() {
+    var text = exportJSON();
+
+    function done(ok) {
+      els.exportNote.textContent = ok
+        ? 'Copied. Paste it over data/wineries.json, commit, and push.'
+        : 'Could not reach the clipboard — use Download instead.';
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+      return;
+    }
+
+    // Older iOS Safari has no async clipboard outside a few contexts.
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+    document.body.removeChild(ta);
+    done(ok);
+  }
+
+  function downloadExport() {
+    var blob = new Blob([exportJSON()], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'wineries.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    els.exportNote.textContent = 'Downloaded. Replace data/wineries.json with it, commit, and push.';
+  }
+
+  function renderExportBar() {
+    var n = pendingKeys().length;
+    els.exportBar.hidden = n === 0;
+    if (!n) return;
+
+    els.exportCount.textContent = n === 1
+      ? '1 rating is saved only in this browser.'
+      : n + ' ratings are saved only in this browser.';
   }
 
   /* ---------- filtering & sorting ---------- */
@@ -404,6 +531,9 @@
       state.query = this.value;
       render();
     });
+
+    els.exportCopy.addEventListener('click', copyExport);
+    els.exportDownload.addEventListener('click', downloadExport);
   }
 
   /* ---------- boot ---------- */
@@ -413,9 +543,13 @@
       esc(message) + '</div>';
   }
 
-  // ?v= must be bumped when wineries.json changes — the CDN caches it for hours
-  // and ignores the no-cache request header, so a new URL is the only reliable buster.
-  fetch('data/wineries.json?v=4', { cache: 'no-cache' })
+  // The CDN caches this for hours and ignores the no-cache request header, so a fresh URL
+  // is the only reliable buster. A 5-minute bucket means pushed ratings show up on your
+  // other devices on their own, without anyone remembering to bump a version by hand —
+  // the file is a few KB, so re-fetching it that often costs nothing.
+  var bucket = Math.floor(Date.now() / (5 * 60 * 1000));
+
+  fetch('data/wineries.json?v=5&t=' + bucket, { cache: 'no-cache' })
     .then(function (res) {
       if (!res.ok) throw new Error('HTTP ' + res.status + ' fetching data/wineries.json');
       return res.json();
@@ -423,10 +557,19 @@
     .then(function (data) {
       if (!Array.isArray(data)) throw new Error('wineries.json must contain a JSON array.');
 
+      state.raw = data;
       state.wineries = data.filter(function (w) { return w && w.name; });
 
-      applyStoredRatings();
+      state.wineries.forEach(function (w) {
+        baseRatings[ratingKey(w)] = typeof w.rating === 'number' ? w.rating : null;
+      });
+
+      overlay = loadOverlay();
+      pruneOverlay();
+      applyOverlay();
+
       renderStats();
+      renderExportBar();
       renderRegionOptions();
       initMap();
       bindEvents();

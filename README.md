@@ -58,11 +58,25 @@ Every visited winery has a clickable five-star control on its card. Click a star
 to rate, click the same star again to clear it. Ratings feed the average-rating
 stat and the "Sort by rating" option immediately.
 
-Because the site is static with no backend, ratings are saved in the browser's
-`localStorage` under `winery-tracker:ratings` — they persist on that browser but
-don't follow you to another device or sync to the repo. To make a rating
-permanent for everyone, set `rating` in `data/wineries.json`; a stored rating for
-the same winery takes precedence over the JSON value on that browser.
+`data/wineries.json` is the source of truth for ratings — it's the only copy
+every device sees. The site is static with no backend, so a click can't write to
+it directly; it lands in a `localStorage` overlay (`winery-tracker:ratings`)
+that shadows the file **in that browser only**. Until it's committed, that
+rating does not exist on your phone.
+
+An export bar appears above the map whenever the overlay holds anything, telling
+you how many ratings are stranded. To land them:
+
+1. **Copy updated JSON** (or **Download**) — you get the whole file with the
+   ratings folded in, formatted exactly like the current one, so the diff is
+   only the `rating` lines.
+2. Paste it over `data/wineries.json`, commit, push.
+3. Every device picks it up within about five minutes.
+
+Once the file agrees with the overlay, the overlay entry is dropped and the bar
+disappears on the next load — so a visible bar always means genuinely unsynced
+work. Clearing a rating exports as `null` rather than reverting to the file
+value, so deletions travel too.
 
 ### Cache busting after a deploy
 
@@ -70,10 +84,13 @@ The site sits behind a CDN that caches assets for hours, so a plain push can
 leave visitors on the old JavaScript. Asset URLs therefore carry a `?v=` marker:
 
 - `index.html` — `assets/style.css?v=N` and `assets/app.js?v=N`
-- `assets/app.js` — the `data/wineries.json?v=N` fetch
 
 **Bump `N` in the same commit as any change to those files.** A new URL is a
 guaranteed miss at the edge; purging the CDN by hand is the fallback, not the plan.
+
+`data/wineries.json` is the exception: its fetch appends a five-minute time
+bucket, so pushed ratings reach your other devices on their own without anyone
+remembering to bump anything. The file is a few KB, so the extra misses are free.
 
 ### Finding coordinates
 

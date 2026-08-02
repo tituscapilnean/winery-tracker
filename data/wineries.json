@@ -5,7 +5,7 @@
     "area": "Napa",
     "status": "visited",
     "date": "2026-08-01",
-    "rating": null,
+    "rating": 4,
     "notes": "",
     "website": "https://titusvineyards.com/",
     "coords": [38.51207, -122.45631]
@@ -16,7 +16,7 @@
     "area": "Napa",
     "status": "visited",
     "date": "2026-08-01",
-    "rating": null,
+    "rating": 4,
     "notes": "",
     "website": "https://www.caymus.com/",
     "coords": [38.46672, -122.3975]
@@ -27,7 +27,7 @@
     "area": "Napa",
     "status": "visited",
     "date": "2026-08-01",
-    "rating": null,
+    "rating": 4,
     "notes": "",
     "website": "https://www.aowinery.com/",
     "coords": [38.47251, -122.42808]
@@ -38,7 +38,7 @@
     "area": "Napa",
     "status": "visited",
     "date": "2026-04-19",
-    "rating": null,
+    "rating": 5,
     "notes": "",
     "website": "https://www.artesawinery.com/",
     "coords": [38.26902, -122.35618]
@@ -49,7 +49,7 @@
     "area": "Napa",
     "status": "visited",
     "date": "2026-04-18",
-    "rating": null,
+    "rating": 3,
     "notes": "",
     "website": "https://www.trefethen.com/",
     "coords": [38.35553, -122.32411]
@@ -60,7 +60,7 @@
     "area": "Napa",
     "status": "visited",
     "date": "2026-04-18",
-    "rating": null,
+    "rating": 5,
     "notes": "",
     "website": "https://inglenook.com/",
     "coords": [38.45435, -122.43115]
@@ -71,7 +71,7 @@
     "area": "Napa",
     "status": "visited",
     "date": "2026-04-18",
-    "rating": null,
+    "rating": 2,
     "notes": "",
     "website": "https://www.regusciwinery.com/",
     "coords": [38.3951, -122.32266]
@@ -82,7 +82,7 @@
     "area": "Sonoma",
     "status": "visited",
     "date": "2026-03-28",
-    "rating": null,
+    "rating": 5,
     "notes": "",
     "website": "https://www.gloriaferrer.com/",
     "coords": [38.27054, -122.49143]

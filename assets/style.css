@@ -285,6 +285,58 @@ a { color: var(--wine-bright); }
 .stars { color: var(--gold); letter-spacing: .06em; }
 .stars .empty { opacity: .3; }
 
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.rating .star {
+  background: none;
+  border: 0;
+  padding: 0 1px;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--gold);
+  opacity: .28;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: opacity .12s ease, transform .12s ease;
+}
+
+.rating .star.is-on { opacity: 1; }
+.rating .star.is-half { opacity: .6; }
+
+/* Hovering a star previews that rating: it and every star before it light up. */
+.rating:hover .star { opacity: .28; }
+.rating .star:hover,
+.rating .star:has(~ .star:hover) { opacity: 1; }
+.rating .star:hover { transform: scale(1.15); }
+
+.rating .star:focus-visible {
+  outline: 2px solid var(--wine-bright);
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+.rating-value {
+  margin-left: 6px;
+  font-size: .74rem;
+  color: var(--muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .card-notes {
   margin: 9px 0 0;
   font-size: .9rem;

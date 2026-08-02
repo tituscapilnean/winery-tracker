@@ -63,6 +63,91 @@
     return w.status === 'visited';
   }
 
+  /* ---------- ratings (stored per browser, since the site is static) ---------- */
+
+  var RATINGS_KEY = 'winery-tracker:ratings';
+
+  function ratingKey(w) {
+    return w.id || w.name;
+  }
+
+  // Private-mode Safari and blocked storage both throw; ratings just don't persist there.
+  function loadRatings() {
+    try {
+      var raw = window.localStorage.getItem(RATINGS_KEY);
+      var parsed = raw ? JSON.parse(raw) : null;
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function persistRating(key, value) {
+    try {
+      var all = loadRatings();
+      if (value == null) delete all[key];
+      else all[key] = value;
+      window.localStorage.setItem(RATINGS_KEY, JSON.stringify(all));
+    } catch (err) {
+      /* not fatal — the rating still applies for this session */
+    }
+  }
+
+  function applyStoredRatings() {
+    var stored = loadRatings();
+    state.wineries.forEach(function (w) {
+      var saved = stored[ratingKey(w)];
+      if (typeof saved === 'number') w.rating = saved;
+    });
+  }
+
+  function setRating(key, value) {
+    var winery = state.wineries.filter(function (w) { return ratingKey(w) === key; })[0];
+    if (!winery) return;
+
+    // Clicking the star that's already set clears the rating.
+    var next = winery.rating === value ? null : value;
+    winery.rating = next;
+    persistRating(key, next);
+
+    renderStats();
+    render();
+
+    // The list is rebuilt on every render, so put focus back where the user left it.
+    var restored = els.results.querySelector(
+      '.rating[data-key="' + cssEscape(key) + '"] button[data-value="' + value + '"]'
+    );
+    if (restored) restored.focus();
+  }
+
+  function cssEscape(value) {
+    if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(value);
+    return String(value).replace(/["\\]/g, '\\$&');
+  }
+
+  function ratingWidgetHTML(w) {
+    var key = ratingKey(w);
+    var current = typeof w.rating === 'number' ? w.rating : null;
+    var buttons = '';
+
+    for (var i = 1; i <= 5; i++) {
+      var on = current != null && current >= i;
+      var half = !on && current != null && current >= i - 0.5;
+      buttons += '<button type="button" data-value="' + i + '"' +
+        ' class="star' + (on ? ' is-on' : '') + (half ? ' is-half' : '') + '"' +
+        ' aria-pressed="' + (on ? 'true' : 'false') + '"' +
+        ' title="' + (current === i ? 'Clear rating' : 'Rate ' + i + ' out of 5') + '"' +
+        '><span aria-hidden="true">★</span>' +
+        '<span class="sr-only">' + i + (i === 1 ? ' star' : ' stars') + '</span></button>';
+    }
+
+    return '<span class="rating" data-key="' + esc(key) + '"' +
+      ' role="group" aria-label="Your rating for ' + esc(w.name) + '">' +
+      buttons +
+      '<span class="rating-value">' + (current == null ? 'Not rated' : current + '/5') + '</span>' +
+      '</span>';
+  }
+
   /* ---------- filtering & sorting ---------- */
 
   function visible() {
@@ -144,7 +229,9 @@
       (isVisited(w) ? 'Visited' : 'To visit') + '</span>');
     if (w.date) meta.push('<span>' + esc(formatDate(w.date)) + '</span>');
     if (w.area && w.area !== w.region) meta.push('<span>' + esc(w.area) + '</span>');
-    if (w.rating != null) meta.push(stars(w.rating));
+    // Visited wineries get the clickable widget; the rest just show a rating if one exists.
+    if (isVisited(w)) meta.push(ratingWidgetHTML(w));
+    else if (w.rating != null) meta.push(stars(w.rating));
 
     return '<article class="card' + visitedClass + '">' +
       '<h3>' + title + '</h3>' +
@@ -307,6 +394,12 @@
       render();
     });
 
+    els.results.addEventListener('click', function (e) {
+      var btn = e.target.closest('.rating button[data-value]');
+      if (!btn) return;
+      setRating(btn.parentNode.dataset.key, Number(btn.dataset.value));
+    });
+
     els.search.addEventListener('input', function () {
       state.query = this.value;
       render();
@@ -330,6 +423,7 @@
 
       state.wineries = data.filter(function (w) { return w && w.name; });
 
+      applyStoredRatings();
       renderStats();
       renderRegionOptions();
       initMap();

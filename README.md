@@ -52,6 +52,18 @@ required, so a to-visit entry can be three lines.
 A trailing comma or a missing brace will show an error banner on the page rather
 than silently rendering a partial list.
 
+### Star ratings
+
+Every visited winery has a clickable five-star control on its card. Click a star
+to rate, click the same star again to clear it. Ratings feed the average-rating
+stat and the "Sort by rating" option immediately.
+
+Because the site is static with no backend, ratings are saved in the browser's
+`localStorage` under `winery-tracker:ratings` — they persist on that browser but
+don't follow you to another device or sync to the repo. To make a rating
+permanent for everyone, set `rating` in `data/wineries.json`; a stored rating for
+the same winery takes precedence over the JSON value on that browser.
+
 ### Finding coordinates
 
 Right-click the winery in Google Maps and copy the `lat, long` pair, or:

@@ -413,7 +413,9 @@
       esc(message) + '</div>';
   }
 
-  fetch('data/wineries.json', { cache: 'no-cache' })
+  // ?v= must be bumped when wineries.json changes — the CDN caches it for hours
+  // and ignores the no-cache request header, so a new URL is the only reliable buster.
+  fetch('data/wineries.json?v=2', { cache: 'no-cache' })
     .then(function (res) {
       if (!res.ok) throw new Error('HTTP ' + res.status + ' fetching data/wineries.json');
       return res.json();

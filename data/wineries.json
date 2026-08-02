@@ -86,5 +86,181 @@
     "notes": "",
     "website": "https://www.gloriaferrer.com/",
     "coords": [38.27054, -122.49143]
+  },
+  {
+    "name": "Domaine Carneros",
+    "region": "Los Carneros",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Sparkling on the château terrace. Natural follow-on to Gloria Ferrer and Artesa.",
+    "website": "https://domainecarneros.com/",
+    "coords": [38.25548, -122.35141]
+  },
+  {
+    "name": "Jarvis Estate",
+    "region": "Napa Valley",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Entirely underground cave winery in the eastern hills. Tour-first, appointment only.",
+    "website": "https://www.jarvisestate.com/",
+    "coords": [38.35533, -122.21528]
+  },
+  {
+    "name": "Chappellet Winery",
+    "region": "Pritchard Hill",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Hillside cabernet with the best view on Pritchard Hill. Coordinates still needed.",
+    "website": "https://www.chappellet.com/",
+    "coords": null
+  },
+  {
+    "name": "Crocker & Starr Winery",
+    "region": "St. Helena",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Small St. Helena estate, cabernet franc alongside the cabernet.",
+    "website": "https://crockerstarr.com/",
+    "coords": [38.50037, -122.45653]
+  },
+  {
+    "name": "Viansa Sonoma",
+    "region": "Los Carneros",
+    "area": "Sonoma",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Hilltop Italian-varietal estate above the Carneros wetlands. Easy picnic stop.",
+    "website": "https://www.viansa.com/",
+    "coords": [38.20841, -122.4518]
+  },
+  {
+    "name": "Benziger Family Winery",
+    "region": "Sonoma Valley",
+    "area": "Sonoma",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Biodynamic estate in Glen Ellen. The tractor tour through the vineyard is the draw.",
+    "website": "https://www.benziger.com/",
+    "coords": [38.35931, -122.5383]
+  },
+  {
+    "name": "Stag's Leap Wine Cellars",
+    "region": "Stags Leap District",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: the benchmark of the district you already visited via Regusci.",
+    "website": "https://www.stagsleapwinecellars.com/",
+    "coords": [38.39879, -122.32321]
+  },
+  {
+    "name": "Shafer Vineyards",
+    "region": "Stags Leap District",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: hillside estate cabernet, seated tasting only. Pairs with a Silverado Trail day.",
+    "website": "https://www.shafervineyards.com/",
+    "coords": [38.42051, -122.32649]
+  },
+  {
+    "name": "Frog's Leap Winery",
+    "region": "Rutherford",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: organic, dry-farmed Rutherford, a lighter counterpoint to Caymus. Coordinates still needed.",
+    "website": "https://www.frogsleap.com/",
+    "coords": null
+  },
+  {
+    "name": "Schramsberg Vineyards",
+    "region": "Calistoga",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: historic sparkling house with hand-dug caves. The Napa answer to Gloria Ferrer.",
+    "website": "https://www.schramsberg.com/",
+    "coords": [38.55024, -122.538]
+  },
+  {
+    "name": "Smith-Madrone Vineyards",
+    "region": "Spring Mountain District",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: mountain estate, riesling and cabernet. Coordinates are approximate (road-level).",
+    "website": "https://smithmadrone.com/",
+    "coords": [38.50689, -122.48738]
+  },
+  {
+    "name": "CADE Estate Winery",
+    "region": "Howell Mountain",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: mountain cabernet with a valley-floor view. Coordinates still needed.",
+    "website": "https://cadewinery.com/",
+    "coords": null
+  },
+  {
+    "name": "Hanzell Vineyards",
+    "region": "Sonoma Valley",
+    "area": "Sonoma",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: the historic Sonoma chardonnay and pinot estate. Small, appointment only.",
+    "website": "https://www.hanzell.com/",
+    "coords": [38.30889, -122.45855]
+  },
+  {
+    "name": "Ridge Vineyards — Lytton Springs",
+    "region": "Dry Creek Valley",
+    "area": "Sonoma",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: old-vine zinfandel field blends. Pushes the map north into Dry Creek.",
+    "website": "https://www.ridgewine.com/",
+    "coords": [38.65974, -122.88539]
+  },
+  {
+    "name": "Iron Horse Vineyards",
+    "region": "Green Valley of Russian River Valley",
+    "area": "Sonoma",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: outdoor-only sparkling tasting over the vineyards. Third sparkling house, different style.",
+    "website": "https://www.ironhorsevineyards.com/",
+    "coords": [38.45612, -122.89869]
+  },
+  {
+    "name": "Ram's Gate Winery",
+    "region": "Los Carneros",
+    "area": "Sonoma",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Suggested: first stop coming up from the city. Hospitality-forward, strong pinot and chardonnay.",
+    "website": "https://www.ramsgatewinery.com/",
+    "coords": [38.17625, -122.44983]
   }
 ]

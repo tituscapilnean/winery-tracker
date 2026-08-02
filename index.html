@@ -7,7 +7,9 @@
 <meta name="description" content="Wineries we've visited in Napa and Sonoma, and the ones still on the list.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#127863;</text></svg>">
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/style.css">
+<!-- ?v= is a cache buster: bump it whenever style.css or app.js changes, or the
+     CDN in front of the site will keep serving the previous version for hours. -->
+<link rel="stylesheet" href="assets/style.css?v=2">
 </head>
 <body>
 
@@ -61,6 +63,6 @@
 </footer>
 
 <script src="assets/vendor/leaflet/leaflet.js"></script>
-<script src="assets/app.js"></script>
+<script src="assets/app.js?v=2"></script>
 </body>
 </html>

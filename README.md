@@ -64,6 +64,17 @@ don't follow you to another device or sync to the repo. To make a rating
 permanent for everyone, set `rating` in `data/wineries.json`; a stored rating for
 the same winery takes precedence over the JSON value on that browser.
 
+### Cache busting after a deploy
+
+The site sits behind a CDN that caches assets for hours, so a plain push can
+leave visitors on the old JavaScript. Asset URLs therefore carry a `?v=` marker:
+
+- `index.html` — `assets/style.css?v=N` and `assets/app.js?v=N`
+- `assets/app.js` — the `data/wineries.json?v=N` fetch
+
+**Bump `N` in the same commit as any change to those files.** A new URL is a
+guaranteed miss at the edge; purging the CDN by hand is the fallback, not the plan.
+
 ### Finding coordinates
 
 Right-click the winery in Google Maps and copy the `lat, long` pair, or:

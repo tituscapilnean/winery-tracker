@@ -40,7 +40,7 @@
     "date": "2026-04-19",
     "rating": null,
     "notes": "",
-    "website": "https://artesawinery.com/",
+    "website": "https://www.artesawinery.com/",
     "coords": [38.26902, -122.35618]
   },
   {
@@ -95,7 +95,7 @@
     "date": null,
     "rating": null,
     "notes": "Sparkling on the château terrace. Natural follow-on to Gloria Ferrer and Artesa.",
-    "website": "https://domainecarneros.com/",
+    "website": "https://www.domainecarneros.com/",
     "coords": [38.25548, -122.35141]
   },
   {
@@ -106,7 +106,7 @@
     "date": null,
     "rating": null,
     "notes": "Entirely underground cave winery in the eastern hills. Tour-first, appointment only.",
-    "website": "https://www.jarvisestate.com/",
+    "website": "https://www.jarviswines.com/",
     "coords": [38.35533, -122.21528]
   },
   {
@@ -117,7 +117,7 @@
     "date": null,
     "rating": null,
     "notes": "Hillside cabernet with the best view on Pritchard Hill. Coordinates still needed.",
-    "website": "https://www.chappellet.com/",
+    "website": "https://chappellet.com/",
     "coords": null
   },
   {
@@ -139,7 +139,7 @@
     "date": null,
     "rating": null,
     "notes": "Hilltop Italian-varietal estate above the Carneros wetlands. Easy picnic stop.",
-    "website": "https://www.viansa.com/",
+    "website": "https://viansa.com/",
     "coords": [38.20841, -122.4518]
   },
   {
@@ -150,7 +150,7 @@
     "date": null,
     "rating": null,
     "notes": "Biodynamic estate in Glen Ellen. The tractor tour through the vineyard is the draw.",
-    "website": "https://www.benziger.com/",
+    "website": "https://benziger.com/",
     "coords": [38.35931, -122.5383]
   },
   {
@@ -172,7 +172,7 @@
     "date": null,
     "rating": null,
     "notes": "Suggested: hillside estate cabernet, seated tasting only. Pairs with a Silverado Trail day.",
-    "website": "https://www.shafervineyards.com/",
+    "website": "https://shafervineyards.com/",
     "coords": [38.42051, -122.32649]
   },
   {
@@ -216,7 +216,7 @@
     "date": null,
     "rating": null,
     "notes": "Suggested: mountain cabernet with a valley-floor view. Coordinates still needed.",
-    "website": "https://cadewinery.com/",
+    "website": "https://www.cadewinery.com/",
     "coords": null
   },
   {
@@ -249,7 +249,7 @@
     "date": null,
     "rating": null,
     "notes": "Suggested: outdoor-only sparkling tasting over the vineyards. Third sparkling house, different style.",
-    "website": "https://www.ironhorsevineyards.com/",
+    "website": "https://ironhorsevineyards.com/",
     "coords": [38.45612, -122.89869]
   },
   {
@@ -262,5 +262,82 @@
     "notes": "Suggested: first stop coming up from the city. Hospitality-forward, strong pinot and chardonnay.",
     "website": "https://www.ramsgatewinery.com/",
     "coords": [38.17625, -122.44983]
+  },
+  {
+    "name": "Black Cat Vineyard",
+    "region": "Napa Valley",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Small producer sourcing across Coombsville, Rutherford and Howell Mountain. Sub-region and coordinates still to confirm.",
+    "website": "https://www.blackcatvineyard.com/",
+    "coords": null
+  },
+  {
+    "name": "Louis M. Martini Winery",
+    "region": "St. Helena",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Historic Highway 29 cabernet house with a large hospitality space.",
+    "website": "https://www.louismartini.com/",
+    "coords": [38.49165, -122.4534]
+  },
+  {
+    "name": "Kenzo Estate",
+    "region": "Napa Valley",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Large private estate in the eastern hills, appointment only. Coordinates still needed.",
+    "website": "https://kenzoestate.com/",
+    "coords": null
+  },
+  {
+    "name": "Signorello Estate",
+    "region": "Napa Valley",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Silverado Trail estate rebuilt after the 2017 fire.",
+    "website": "https://www.signorelloestate.com/",
+    "coords": [38.36604, -122.29633]
+  },
+  {
+    "name": "Quixote Winery",
+    "region": "Stags Leap District",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Hundertwasser-designed winery with the gold dome. Third stop for a Stags Leap day.",
+    "website": "https://quixotewinery.com/",
+    "coords": [38.41671, -122.33664]
+  },
+  {
+    "name": "Reid Family Vineyards",
+    "region": "Napa Valley",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Small family winery on Borrette Lane, south of the town of Napa.",
+    "website": "https://reidfamilyvineyards.com/",
+    "coords": [38.31373, -122.34883]
+  },
+  {
+    "name": "Materra | Cunat Family Vineyards",
+    "region": "Oak Knoll District",
+    "area": "Napa",
+    "status": "to-visit",
+    "date": null,
+    "rating": null,
+    "notes": "Big Ranch Road estate, a few minutes from Trefethen.",
+    "website": "https://www.materrawines.com/",
+    "coords": [38.3533, -122.30661]
   }
 ]

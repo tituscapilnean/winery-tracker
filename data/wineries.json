@@ -116,9 +116,9 @@
     "status": "to-visit",
     "date": null,
     "rating": null,
-    "notes": "Hillside cabernet with the best view on Pritchard Hill. Coordinates still needed.",
+    "notes": "Hillside cabernet with the best view on Pritchard Hill.",
     "website": "https://chappellet.com/",
-    "coords": null
+    "coords": [38.48726, -122.35315]
   },
   {
     "name": "Crocker & Starr Winery",
@@ -182,9 +182,9 @@
     "status": "to-visit",
     "date": null,
     "rating": null,
-    "notes": "Suggested: organic, dry-farmed Rutherford, a lighter counterpoint to Caymus. Coordinates still needed.",
+    "notes": "Suggested: organic, dry-farmed Rutherford, a lighter counterpoint to Caymus.",
     "website": "https://www.frogsleap.com/",
-    "coords": null
+    "coords": [38.47139, -122.39934]
   },
   {
     "name": "Schramsberg Vineyards",
@@ -215,9 +215,9 @@
     "status": "to-visit",
     "date": null,
     "rating": null,
-    "notes": "Suggested: mountain cabernet with a valley-floor view. Coordinates still needed.",
+    "notes": "Suggested: mountain cabernet with a valley-floor view. Coordinates are approximate (road-level).",
     "website": "https://www.cadewinery.com/",
-    "coords": null
+    "coords": [38.58348, -122.44091]
   },
   {
     "name": "Hanzell Vineyards",
@@ -270,9 +270,9 @@
     "status": "to-visit",
     "date": null,
     "rating": null,
-    "notes": "Small producer sourcing across Coombsville, Rutherford and Howell Mountain. Sub-region and coordinates still to confirm.",
+    "notes": "Small producer sourcing across Coombsville, Rutherford and Howell Mountain. Tasting at 1352 4th Ave, Napa.",
     "website": "https://www.blackcatvineyard.com/",
-    "coords": null
+    "coords": [38.28221, -122.2478]
   },
   {
     "name": "Louis M. Martini Winery",
@@ -292,9 +292,9 @@
     "status": "to-visit",
     "date": null,
     "rating": null,
-    "notes": "Large private estate in the eastern hills, appointment only. Coordinates still needed.",
+    "notes": "Large private estate in the eastern hills on Monticello Road, appointment only.",
     "website": "https://kenzoestate.com/",
-    "coords": null
+    "coords": [38.35425, -122.20552]
   },
   {
     "name": "Signorello Estate",

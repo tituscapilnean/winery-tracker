@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Titus Vineyards",
+    "region": "St. Helena",
+    "area": "Napa",
+    "status": "visited",
+    "date": "2026-08-01",
+    "rating": null,
+    "notes": "",
+    "website": "https://titusvineyards.com/",
+    "coords": [38.51207, -122.45631]
+  },
+  {
+    "name": "Caymus Vineyards",
+    "region": "Rutherford",
+    "area": "Napa",
+    "status": "visited",
+    "date": "2026-08-01",
+    "rating": null,
+    "notes": "",
+    "website": "https://www.caymus.com/",
+    "coords": [38.46672, -122.3975]
+  },
+  {
+    "name": "Alpha Omega Winery",
+    "region": "Rutherford",
+    "area": "Napa",
+    "status": "visited",
+    "date": "2026-08-01",
+    "rating": null,
+    "notes": "",
+    "website": "https://www.aowinery.com/",
+    "coords": [38.47251, -122.42808]
+  },
+  {
+    "name": "Artesa Vineyards & Winery",
+    "region": "Los Carneros",
+    "area": "Napa",
+    "status": "visited",
+    "date": "2026-04-19",
+    "rating": null,
+    "notes": "",
+    "website": "https://artesawinery.com/",
+    "coords": [38.26902, -122.35618]
+  },
+  {
+    "name": "Trefethen Family Vineyards",
+    "region": "Oak Knoll District",
+    "area": "Napa",
+    "status": "visited",
+    "date": "2026-04-18",
+    "rating": null,
+    "notes": "",
+    "website": "https://www.trefethen.com/",
+    "coords": [38.35553, -122.32411]
+  },
+  {
+    "name": "Inglenook",
+    "region": "Rutherford",
+    "area": "Napa",
+    "status": "visited",
+    "date": "2026-04-18",
+    "rating": null,
+    "notes": "",
+    "website": "https://inglenook.com/",
+    "coords": [38.45435, -122.43115]
+  },
+  {
+    "name": "Regusci Winery",
+    "region": "Stags Leap District",
+    "area": "Napa",
+    "status": "visited",
+    "date": "2026-04-18",
+    "rating": null,
+    "notes": "",
+    "website": "https://www.regusciwinery.com/",
+    "coords": [38.3951, -122.32266]
+  },
+  {
+    "name": "Gloria Ferrer Caves & Vineyards",
+    "region": "Los Carneros",
+    "area": "Sonoma",
+    "status": "visited",
+    "date": "2026-03-28",
+    "rating": null,
+    "notes": "",
+    "website": "https://www.gloriaferrer.com/",
+    "coords": [38.27054, -122.49143]
+  }
+]

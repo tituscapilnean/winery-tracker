@@ -264,17 +264,6 @@
     "coords": [38.17625, -122.44983]
   },
   {
-    "name": "Black Cat Vineyard",
-    "region": "Napa Valley",
-    "area": "Napa",
-    "status": "to-visit",
-    "date": null,
-    "rating": null,
-    "notes": "Small producer sourcing across Coombsville, Rutherford and Howell Mountain. Tasting at 1352 4th Ave, Napa.",
-    "website": "https://www.blackcatvineyard.com/",
-    "coords": [38.28221, -122.2478]
-  },
-  {
     "name": "Louis M. Martini Winery",
     "region": "St. Helena",
     "area": "Napa",
@@ -284,17 +273,6 @@
     "notes": "Historic Highway 29 cabernet house with a large hospitality space.",
     "website": "https://www.louismartini.com/",
     "coords": [38.49165, -122.4534]
-  },
-  {
-    "name": "Kenzo Estate",
-    "region": "Napa Valley",
-    "area": "Napa",
-    "status": "to-visit",
-    "date": null,
-    "rating": null,
-    "notes": "Large private estate in the eastern hills on Monticello Road, appointment only.",
-    "website": "https://kenzoestate.com/",
-    "coords": [38.35425, -122.20552]
   },
   {
     "name": "Signorello Estate",
@@ -317,17 +295,6 @@
     "notes": "Hundertwasser-designed winery with the gold dome. Third stop for a Stags Leap day.",
     "website": "https://quixotewinery.com/",
     "coords": [38.41671, -122.33664]
-  },
-  {
-    "name": "Reid Family Vineyards",
-    "region": "Napa Valley",
-    "area": "Napa",
-    "status": "to-visit",
-    "date": null,
-    "rating": null,
-    "notes": "Small family winery on Borrette Lane, south of the town of Napa.",
-    "website": "https://reidfamilyvineyards.com/",
-    "coords": [38.31373, -122.34883]
   },
   {
     "name": "Materra | Cunat Family Vineyards",
